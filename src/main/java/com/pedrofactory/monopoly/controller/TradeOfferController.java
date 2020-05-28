@@ -4,6 +4,7 @@ import com.pedrofactory.monopoly.dto.TradeOfferRequest;
 import com.pedrofactory.monopoly.dto.TradeOfferResponse;
 import com.pedrofactory.monopoly.dto.UpdateTradeOffer;
 import com.pedrofactory.monopoly.entity.TradeOffer;
+import com.pedrofactory.monopoly.exception.TradeOfferNotFoundException;
 import com.pedrofactory.monopoly.exception.UserNotFoundException;
 import com.pedrofactory.monopoly.service.TradeOfferService;
 import lombok.AllArgsConstructor;
@@ -32,7 +33,7 @@ public class TradeOfferController {
     }
 
     @GetMapping(value = "/{tradeOfferId}")
-    public ResponseEntity<TradeOfferResponse> getById(@PathVariable Long tradeOfferId)  {
+    public ResponseEntity<TradeOfferResponse> getById(@PathVariable Long tradeOfferId) throws TradeOfferNotFoundException {
         return new ResponseEntity<>(tradeOfferService.getTradeOfferById(tradeOfferId),HttpStatus.OK);
     }
 

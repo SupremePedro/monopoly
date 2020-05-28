@@ -9,6 +9,7 @@ import com.pedrofactory.monopoly.entity.Item;
 import com.pedrofactory.monopoly.enums.OfferStatus;
 import com.pedrofactory.monopoly.entity.TradeOffer;
 import com.pedrofactory.monopoly.entity.User;
+import com.pedrofactory.monopoly.exception.TradeOfferNotFoundException;
 import com.pedrofactory.monopoly.exception.UserNotFoundException;
 import com.pedrofactory.monopoly.repository.ItemRepository;
 import com.pedrofactory.monopoly.repository.TradeOfferRepository;
@@ -71,8 +72,8 @@ public class TradeOfferServiceImpl implements TradeOfferService {
     }
 
     @Override
-    public TradeOfferResponse getTradeOfferById(Long id) {
-        TradeOffer tradeOffer = tradeOfferRepository.getOne(id);
+    public TradeOfferResponse getTradeOfferById(Long id) throws TradeOfferNotFoundException {
+        TradeOffer tradeOffer = tradeOfferRepository.findById(id).orElseThrow(()->new TradeOfferNotFoundException(id.toString()));
         TradeOfferResponse tradeOfferResponse = TradeOfferMapper.INSTANCE.entityToResponse(tradeOffer);
         return tradeOfferResponse;
     }
