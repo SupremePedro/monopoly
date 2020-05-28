@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class AuthControllerAdvice {
 
     @ExceptionHandler({ClientAlreadyExistsException.class,UserAlreadyExistsException.class})
-    public ResponseEntity<String> clientAlreadyExist(Exception exception){
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.CONFLICT);
+    public ResponseEntity<Exception> clientAlreadyExist(Exception exception){
+        return new ResponseEntity<>(exception, HttpStatus.CONFLICT);
     }
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<String> userNotFoundException(UserNotFoundException ex){
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Exception> userNotFoundException(UserNotFoundException ex){
+        return new ResponseEntity<>(ex, HttpStatus.BAD_REQUEST);
     }
 }
