@@ -1,10 +1,12 @@
 package com.pedrofactory.monopoly.controller;
 
 import com.pedrofactory.monopoly.dto.*;
+import com.pedrofactory.monopoly.entity.User;
 import com.pedrofactory.monopoly.exception.UserAlreadyExistsException;
 import com.pedrofactory.monopoly.exception.UserNotFoundException;
 import com.pedrofactory.monopoly.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +33,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserResponse>> getAllUsers(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "6") Integer size) {
+    public ResponseEntity<Page<UserResponse>> getAllUsers(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "6") Integer size) {
         return new ResponseEntity<>(userService.getAllUser(page, size),HttpStatus.OK);
     }
 

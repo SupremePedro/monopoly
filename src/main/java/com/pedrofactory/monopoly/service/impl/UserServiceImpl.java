@@ -12,16 +12,17 @@ import com.pedrofactory.monopoly.repository.UserRepository;
 import com.pedrofactory.monopoly.service.UserService;
 import com.pedrofactory.monopoly.utils.mapstruct.UserMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -68,16 +69,15 @@ public class UserServiceImpl implements UserService {
         return userResponse;
     }
 
-
     @Override
-    public List<UserResponse> getAllUser(Integer page, Integer size) {
-        List<User> users= userRepository.findAll(PageRequest.of(page, size)).getContent();
-        List<UserResponse> userResponses = new ArrayList<>();
-        for (User user:users
-             ) {
-            userResponses.add(UserMapper.INSTANCE.userToUserResponse(user));
-        }
-        return userResponses;
+    public Page<UserResponse> getAllUser(Integer page, Integer size){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<User> userPage = userRepository.findAll(pageable);
+        return new PageImpl<UserResponse>(userPage
+                .stream()
+                .map(user ->
+                        UserMapper.INSTANCE.userToUserResponse(user))
+                .collect(Collectors.toList()), pageable, userPage.getTotalElements());
     }
 
     @Override

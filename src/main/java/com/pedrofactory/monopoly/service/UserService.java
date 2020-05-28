@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface UserService {
 
-    List<UserResponse> getAllUser(Integer page, Integer size);
+    Page<UserResponse> getAllUser(Integer page, Integer size);
     UserResponse addUser(UserRegisterRequest user) throws UserNotFoundException, UserAlreadyExistsException;
     UserResponse getUser(Long id) throws UserNotFoundException;
     UserResponse updateUser(Long id, UserRequest user) throws UserNotFoundException;

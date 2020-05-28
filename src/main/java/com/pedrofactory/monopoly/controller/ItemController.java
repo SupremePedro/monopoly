@@ -7,6 +7,7 @@ import com.pedrofactory.monopoly.exception.ItemNotFoundException;
 import com.pedrofactory.monopoly.entity.Item;
 import com.pedrofactory.monopoly.service.ItemService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,7 @@ public class ItemController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ItemResponse>> getAllItem(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "6") Integer size){
+    public ResponseEntity<Page<ItemResponse>> getAllItem(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "6") Integer size){
         return new ResponseEntity<>(itemService.getAllItem(page, size),HttpStatus.OK);
     }
 

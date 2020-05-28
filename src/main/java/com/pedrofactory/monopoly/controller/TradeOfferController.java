@@ -7,6 +7,7 @@ import com.pedrofactory.monopoly.entity.TradeOffer;
 import com.pedrofactory.monopoly.exception.UserNotFoundException;
 import com.pedrofactory.monopoly.service.TradeOfferService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class TradeOfferController {
     final TradeOfferService tradeOfferService;
 
     @GetMapping
-    public ResponseEntity<List<TradeOfferResponse>> getAllTradeOffers(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "6") Integer size){
+    public ResponseEntity<Page<TradeOfferResponse>> getAllTradeOffers(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "6") Integer size){
         return new ResponseEntity<>(tradeOfferService.getAllTradeOffers(page,size),HttpStatus.OK);
     }
 

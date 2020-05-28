@@ -17,11 +17,15 @@ import com.pedrofactory.monopoly.service.TradeOfferService;
 import com.pedrofactory.monopoly.utils.mapstruct.TradeOfferMapper;
 import com.pedrofactory.monopoly.utils.mapstruct.UserMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -56,14 +60,14 @@ public class TradeOfferServiceImpl implements TradeOfferService {
     }
 
     @Override
-    public List<TradeOfferResponse> getAllTradeOffers(Integer page, Integer size) {
-        List<TradeOffer> tradeOffers = tradeOfferRepository.findAll(PageRequest.of(page, size)).getContent();
-        List<TradeOfferResponse> tradeOfferResponses = new ArrayList<>();
-        for (TradeOffer tradeOffer : tradeOffers
-        ) {
-            tradeOfferResponses.add(TradeOfferMapper.INSTANCE.entityToResponse(tradeOffer));
-        }
-        return tradeOfferResponses;
+    public Page<TradeOfferResponse> getAllTradeOffers(Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<TradeOffer> tradeOfferPage = tradeOfferRepository.findAll(pageable);
+        return new PageImpl<TradeOfferResponse>(tradeOfferPage
+                .stream()
+                .map(tradeOffer ->
+                        TradeOfferMapper.INSTANCE.entityToResponse(tradeOffer))
+                .collect(Collectors.toList()), pageable, tradeOfferPage.getTotalElements());
     }
 
     @Override
